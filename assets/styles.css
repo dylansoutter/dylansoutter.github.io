@@ -79,3 +79,11 @@ footer{border-top:0}
 .about-copy p{margin:0 0 17px;line-height:1.78}
 .about-copy p:last-child{margin-bottom:0}
 .backend-grid .eyebrow{margin-bottom:12px}
+
+.stuff-samples .sample-scroll{overflow-x:auto}
+.stuff-samples .sample-table{width:100%;min-width:600px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.stuff-samples .sample-table th,.stuff-samples .sample-table td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+.stuff-samples .sample-table th{color:var(--muted);font-size:12px;font-weight:500}
+.stuff-samples .sample-table td{font-size:14px}
+.stuff-samples .sample-table th:nth-child(n+3),.stuff-samples .sample-table td:nth-child(n+3){text-align:right}
+.stuff-samples .csv-sample{margin:18px 0 0;padding:16px 0;overflow-x:auto;border-block:1px solid var(--border);font:13px/1.7 Consolas,monospace;color:var(--text);white-space:pre}
