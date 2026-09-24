@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>College baseball Stuff+ — illustrative explainer</title>
+  <style>
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    :root { color-scheme: light dark; font-family: system-ui, -apple-system, Segoe UI, sans-serif; }
+    body { margin: 0; background: #f5f7f9; color: #14212c; }
+    main { max-width: 760px; margin: 0 auto; padding: 40px 20px 56px; }
+    h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; margin: 0 0 12px; }
+    p { line-height: 1.55; }
+    .intro { max-width: 68ch; color: #465869; margin-bottom: 24px; }
+    .notice { padding: 12px 16px; border-left: 4px solid #e2a928; background: #fff8df; font-size: .93rem; }
+    .workflow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0 8px; padding: 0; list-style: none; }
+    .workflow li { border-top: 3px solid #006b66; padding: 12px 4px 0; line-height: 1.45; }
+    .workflow strong { display: block; margin-bottom: 4px; }
+    .workflow span { color: #465869; font-size: .88rem; }
+    .profiles { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+    button { font: inherit; border: 1px solid #aebcc7; border-radius: 999px; padding: 10px 16px; background: #fff; color: inherit; cursor: pointer; }
+    button[aria-pressed="true"] { border-color: #006b66; background: #006b66; color: #fff; }
+    button:focus-visible { outline: 3px solid #e2a928; outline-offset: 3px; }
+    .result { background: #fff; border: 1px solid #d8e0e6; border-radius: 16px; padding: 24px; }
+    .result-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .result h2 { font-size: 1.15rem; margin: 0; }
+    .score { font-size: 2.7rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+    .scale { position: relative; margin: 30px 10px 12px; height: 14px; background: linear-gradient(90deg, #bddee0 0%, #8fc6c2 50%, #006b66 100%); border-radius: 999px; }
+    .marker { position: absolute; top: -7px; width: 4px; height: 28px; background: #14212c; border-radius: 2px; transform: translateX(-50%); transition: left .25s ease; }
+    .scale-labels { display: flex; justify-content: space-between; font-size: .86rem; color: #465869; }
+    .scale-labels span:nth-child(2) { margin-left: 8px; }
+    .meaning { min-height: 2.4em; margin: 20px 0 24px; }
+    h3 { font-size: 1rem; margin: 0 0 10px; }
+    dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0; }
+    dl div { background: #f1f6f6; border-radius: 10px; padding: 12px; }
+    dt { color: #465869; font-size: .82rem; }
+    dd { margin: 6px 0 0; font-size: 1.15rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .footnote { font-size: .88rem; color: #465869; margin-top: 16px; }
+    .example { margin-top: 32px; }
+    .example p { color: #465869; font-size: .9rem; }
+    pre { overflow-x: auto; max-width: 100%; padding: 16px; border-radius: 10px; background: #e8eef1; font-size: .82rem; line-height: 1.5; white-space: pre; }
+    .table-scroll { overflow-x: auto; max-width: 100%; }
+    table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid #d8e0e6; text-align: left; white-space: nowrap; }
+    th { color: #465869; font-size: .85rem; font-weight: 600; }
+    td.num, th.num { text-align: right; }
+    tbody tr:nth-child(odd) { background: #eef3f5; }
+    @media (max-width: 560px) { main { padding: 24px 16px 40px; } .result { padding: 18px; } .workflow { grid-template-columns: 1fr; } }
+    @media (max-width: 390px) { dl { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .marker { transition: none; } }
+    @media (prefers-color-scheme: dark) {
+      body { background: #101a21; color: #e7f0f2; }
+      .intro, .scale-labels, dt, .footnote, .workflow span, .example p { color: #b2c5cc; }
+      .notice { background: #38301a; border-color: #e2a928; }
+      button { background: #1b2a34; border-color: #58707b; }
+      button[aria-pressed="true"] { background: #12aaa1; border-color: #12aaa1; color: #081e1e; }
+      .result { background: #18262f; border-color: #38505a; }
+      .marker { background: #fff; }
+      dl div { background: #23363e; }
+      pre { background: #23363e; }
+      th { color: #b2c5cc; }
+      th, td { border-bottom-color: #38505a; }
+      tbody tr:nth-child(odd) { background: #1b2b34; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 class="visually-hidden">Stuff+ illustrative demo</h1>
+    <p class="intro">This project trains an XGBoost classifier on 2020–21 Division I fastball-family pitches to estimate the chance of a called or swinging strike (CSW). It tests that model on 2022 pitches, then converts average predicted CSW into a pitcher-team Stuff+ grade.</p>
+    <ol class="workflow" aria-label="Model workflow">
+      <li><strong>1. Physical inputs</strong><span>Release, spin, movement, and release-angle measurements from each pitch.</span></li>
+      <li><strong>2. XGBoost prediction</strong><span>The selected model estimates CSW probability without batter, count, sequence, or plate location.</span></li>
+      <li><strong>3. Stuff+ scale</strong><span>Pitch predictions are averaged by pitcher-team and placed on a 100-centered reference scale.</span></li>
+    </ol>
+    <p class="notice"><strong>Illustrative demo:</strong> Every profile, measurement, and score below is invented. Switching profiles does not run XGBoost or produce a real scouting evaluation.</p>
+
+    <div class="profiles" role="group" aria-label="Fictional fastball profiles">
+      <button type="button" data-profile="lower" aria-pressed="false">Profile A</button>
+      <button type="button" data-profile="reference" aria-pressed="true">Profile B</button>
+      <button type="button" data-profile="higher" aria-pressed="false">Profile C</button>
+    </div>
+
+    <section class="result" aria-labelledby="profile-title">
+      <div class="result-top">
+        <h2 id="profile-title">Profile B · fictional fastball</h2>
+        <div><span class="score" id="score" aria-live="polite">100</span> <span>Stuff+ example</span></div>
+      </div>
+      <div class="scale" role="img" aria-label="Illustrative Stuff+ scale from 80 to 120; selected score 100">
+        <span class="marker" id="marker" style="left: 50%"></span>
+      </div>
+      <div class="scale-labels"><span>80</span><span>100 · reference</span><span>120</span></div>
+      <p class="meaning" id="meaning" aria-live="polite">A score of 100 is the reference point on this example scale.</p>
+      <h3>Example physical traits used by the selected model</h3>
+      <dl>
+        <div><dt>Release speed</dt><dd id="speed">91 mph</dd></div>
+        <div><dt>Spin rate</dt><dd id="spin-rate">2,200 rpm</dd></div>
+        <div><dt>Spin axis</dt><dd id="spin-axis">210°</dd></div>
+        <div><dt>Induced vertical break</dt><dd id="vertical-break">17 in</dd></div>
+        <div><dt>Horizontal break</dt><dd id="horizontal-break">−7 in</dd></div>
+        <div><dt>Extension</dt><dd id="extension">6.0 ft</dd></div>
+        <div><dt>Release height</dt><dd id="release-height">5.9 ft</dd></div>
+        <div><dt>Release side</dt><dd id="release-side">−1.8 ft</dd></div>
+        <div><dt>Vertical release angle</dt><dd id="vertical-angle">−2.0°</dd></div>
+        <div><dt>Horizontal release angle</dt><dd id="horizontal-angle">1.4°</dd></div>
+      </dl>
+      <p class="footnote">Spin axis is encoded as sine and cosine; horizontal measurements are mirrored to a common handedness. The selected model excludes adjusted approach angles after a holdout comparison. In the actual project, 100 is based on qualifying 2022 D1 pitcher-team averages, and 10 points represents one standard deviation of those averages. A score does not measure command or guarantee an outcome.</p>
+    </section>
+
+
+  </main>
+  <script>
+    const profiles = {
+      lower: { label: 'A', score: 90, speed: '88 mph', spinRate: '2,050 rpm', spinAxis: '195°', verticalBreak: '14 in', horizontalBreak: '−5 in', extension: '5.8 ft', releaseHeight: '5.7 ft', releaseSide: '−1.6 ft', verticalAngle: '−2.3°', horizontalAngle: '1.1°', meaning: 'A score of 90 sits one reference standard deviation below 100 on this example scale.' },
+      reference: { label: 'B', score: 100, speed: '91 mph', spinRate: '2,200 rpm', spinAxis: '210°', verticalBreak: '17 in', horizontalBreak: '−7 in', extension: '6.0 ft', releaseHeight: '5.9 ft', releaseSide: '−1.8 ft', verticalAngle: '−2.0°', horizontalAngle: '1.4°', meaning: 'A score of 100 is the reference point on this example scale.' },
+      higher: { label: 'C', score: 110, speed: '94 mph', spinRate: '2,350 rpm', spinAxis: '225°', verticalBreak: '20 in', horizontalBreak: '−9 in', extension: '6.2 ft', releaseHeight: '6.1 ft', releaseSide: '−2.0 ft', verticalAngle: '−1.7°', horizontalAngle: '1.7°', meaning: 'A score of 110 sits one reference standard deviation above 100 on this example scale.' }
+    };
+
+    const buttons = document.querySelectorAll('[data-profile]');
+    function selectProfile(key) {
+      const profile = profiles[key];
+      if (!profile) return;
+      buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.profile === key)));
+      document.getElementById('profile-title').textContent = `Profile ${profile.label} · fictional fastball`;
+      document.getElementById('score').textContent = profile.score;
+      document.getElementById('meaning').textContent = profile.meaning;
+      document.getElementById('speed').textContent = profile.speed;
+      document.getElementById('spin-rate').textContent = profile.spinRate;
+      document.getElementById('spin-axis').textContent = profile.spinAxis;
+      document.getElementById('vertical-break').textContent = profile.verticalBreak;
+      document.getElementById('horizontal-break').textContent = profile.horizontalBreak;
+      document.getElementById('extension').textContent = profile.extension;
+      document.getElementById('release-height').textContent = profile.releaseHeight;
+      document.getElementById('release-side').textContent = profile.releaseSide;
+      document.getElementById('vertical-angle').textContent = profile.verticalAngle;
+      document.getElementById('horizontal-angle').textContent = profile.horizontalAngle;
+      document.getElementById('marker').style.left = `${(profile.score - 80) / 40 * 100}%`;
+      document.querySelector('.scale').setAttribute('aria-label', `Illustrative Stuff+ scale from 80 to 120; selected score ${profile.score}`);
+    }
+    buttons.forEach(button => button.addEventListener('click', () => selectProfile(button.dataset.profile)));
+  </script>
+</body>
+</html>
